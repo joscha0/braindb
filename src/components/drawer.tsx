@@ -18,7 +18,6 @@ import {
   ListSubheader,
 } from "@mui/material";
 import Link from "next/link";
-import Image from "next/image";
 
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
@@ -86,6 +85,18 @@ const ResponsiveDrawer = ({ drawerWidth, toggleTheme, isDarkTheme }: Props) => {
                 <ArticleIcon />
               </ListItemIcon>
               <ListItemText primary="Home" />
+            </ListItemButton>
+          </ListItem>
+          <ListItem disablePadding>
+            <ListItemButton
+              selected={currentPage === "/signup"}
+              component={Link}
+              href="/signup"
+            >
+              <ListItemIcon>
+                <ArticleIcon />
+              </ListItemIcon>
+              <ListItemText primary="Account" />
             </ListItemButton>
           </ListItem>
           <ListSubheader component="div" id="nested-list-subheader">

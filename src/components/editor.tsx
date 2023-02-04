@@ -1,11 +1,9 @@
 import {
   BoldExtension,
-  CalloutExtension,
   HistoryExtension,
   HeadingExtension,
   ItalicExtension,
   UnderlineExtension,
-  CodeBlockExtension,
   WhitespaceExtension,
   CodeExtension,
   TrailingNodeExtension,
@@ -17,6 +15,7 @@ import {
   ImageExtension,
   BlockquoteExtension,
   NodeFormattingExtension,
+  //   CalloutExtension,
   HardBreakExtension,
 } from "remirror/extensions";
 import { FindExtension } from "@remirror/extension-find";
@@ -34,13 +33,9 @@ import {
   HistoryButtonGroup,
   Toolbar,
   FindReplaceComponent,
-  ThemeProvider,
   OnChangeJSON,
-  ToggleCodeButton,
   CommandButtonGroup,
-  BaselineButtonGroup,
-  CalloutTypeButtonGroup,
-  FormattingButtonGroup,
+  //   CalloutTypeButtonGroup,
   ListButtonGroup,
   TextAlignmentButtonGroup,
   IndentationButtonGroup,
@@ -50,7 +45,7 @@ import {
 } from "@remirror/react";
 import { Box, IconButton, Paper, Popper } from "@mui/material";
 import { useCallback, useState } from "react";
-import { htmlToProsemirrorNode, RemirrorJSON } from "remirror";
+import { ProsemirrorNode, RemirrorJSON } from "remirror";
 import SearchIcon from "@mui/icons-material/Search";
 
 const extensions = () => [
@@ -70,6 +65,7 @@ const extensions = () => [
   new HorizontalRuleExtension(),
   new BlockquoteExtension(),
   new NodeFormattingExtension(),
+  //   new CalloutExtension({ renderEmoji, defaultEmoji: "💡" }),
   new LinkExtension({ autoLink: true }),
   new ImageExtension({ enableResizing: true }),
   new CodeMirrorExtension({
@@ -79,6 +75,12 @@ const extensions = () => [
 ];
 
 const STORAGE_KEY = "remirror-editor-content";
+
+const renderEmoji = (node: ProsemirrorNode) => {
+  const emoji = document.createElement("span");
+  emoji.textContent = node.attrs.emoji;
+  return emoji;
+};
 
 const Editor: React.FC = () => {
   const { manager, state, onChange } = useRemirror({
@@ -133,6 +135,7 @@ const Editor: React.FC = () => {
             <IndentationButtonGroup />
             <LineHeightButtonDropdown />
             <ListButtonGroup />
+            {/* <CalloutTypeButtonGroup /> */}
             <IconButton aria-describedby={id} onClick={handleClick}>
               <SearchIcon />
             </IconButton>
