@@ -76,16 +76,16 @@ const extensions = () => [
 
 const STORAGE_KEY = "remirror-editor-content";
 
-const renderEmoji = (node: ProsemirrorNode) => {
-  const emoji = document.createElement("span");
-  emoji.textContent = node.attrs.emoji;
-  return emoji;
-};
+// const renderEmoji = (node: ProsemirrorNode) => {
+//   const emoji = document.createElement("span");
+//   emoji.textContent = node.attrs.emoji;
+//   return emoji;
+// };
 
 const Editor: React.FC = () => {
   const { manager, state, onChange } = useRemirror({
     extensions,
-    content: "<p>I love <b>Remirror</b></p>",
+    content: "",
     selection: "end",
     stringHandler: "html",
   });
@@ -93,7 +93,10 @@ const Editor: React.FC = () => {
   const [initialContent] = useState<RemirrorJSON | undefined>(() => {
     // Retrieve the JSON from localStorage (or undefined if not found)
     const content = window.localStorage.getItem(STORAGE_KEY);
-    return content ? JSON.parse(content) : undefined;
+    const json: RemirrorJSON | undefined = content
+      ? JSON.parse(content)
+      : undefined;
+    return json;
   });
 
   const handleEditorChange = useCallback((json: RemirrorJSON) => {
