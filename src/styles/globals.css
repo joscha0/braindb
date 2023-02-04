@@ -28,11 +28,22 @@ a {
 
 .remirror-editor {
   height: 100%;
-  padding-top: 50px;
+  padding-top: 70px;
   padding-left: 15px;
   padding-right: 15px;
   border: none;
   outline: none;
+  line-height: 1 !important;
+}
+
+.remirror-list-item-with-custom-mark > div,
+.remirror-list-item-with-custom-mark > label {
+  display: inline-block;
+}
+
+.remirror-editor > ul[data-task-list] {
+  padding-inline-start: 0px;
+  list-style-type: none;
 }
 
 .remirror-editor strong {
