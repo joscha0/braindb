@@ -27,10 +27,11 @@ a {
 }
 
 .remirror-editor {
-  height: 100%;
+  min-height: 100%;
   padding-top: 70px;
   padding-left: 15px;
   padding-right: 15px;
+  padding-bottom: 50%;
   border: none;
   outline: none;
   line-height: 1 !important;

@@ -15,6 +15,7 @@ import {
   Box,
   IconButton,
   Typography,
+  ListSubheader,
 } from "@mui/material";
 import Link from "next/link";
 import Image from "next/image";
@@ -87,6 +88,9 @@ const ResponsiveDrawer = ({ drawerWidth, toggleTheme, isDarkTheme }: Props) => {
               <ListItemText primary="Home" />
             </ListItemButton>
           </ListItem>
+          <ListSubheader component="div" id="nested-list-subheader">
+            Recent Pages
+          </ListSubheader>
         </List>
         <Box sx={{ display: "flex", justifyContent: "space-around" }}>
           <IconButton
