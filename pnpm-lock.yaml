@@ -10,6 +10,7 @@ specifiers:
   '@mui/icons-material': ^5.11.0
   '@mui/lab': 5.0.0-alpha.118
   '@mui/material': ^5.11.7
+  '@mui/x-data-grid': ^5.17.22
   '@mui/x-date-pickers': ^5.0.17
   '@remirror/extension-codemirror6': ^1.0.11
   '@remirror/extension-find': ^0.1.4
@@ -49,6 +50,7 @@ dependencies:
   '@mui/icons-material': 5.11.0_m3y2ykptchyoygtoroit6l3ehq
   '@mui/lab': 5.0.0-alpha.118_fmcb73g2fj7ijupodkeaypqkh4
   '@mui/material': 5.11.7_rqh7qj4464ntrqrt6banhaqg4q
+  '@mui/x-data-grid': 5.17.22_juhrskmuvyorwpajghq6zhdw2q
   '@mui/x-date-pickers': 5.0.17_qo5tbv3wjsnulj3odbgeoxieku
   '@remirror/extension-codemirror6': 1.0.11_7egqq7ly63ucpiq26ahdecir7y
   '@remirror/extension-find': 0.1.4_7egqq7ly63ucpiq26ahdecir7y
@@ -1125,6 +1127,25 @@ packages:
       prop-types: 15.8.1
       react: 18.2.0
       react-is: 18.2.0
+    dev: false
+
+  /@mui/x-data-grid/5.17.22_juhrskmuvyorwpajghq6zhdw2q:
+    resolution: {integrity: sha512-75nc+BL5G8/KzMOBl7NQ622D9n6mLx3tsRnF0HmccGYLMrZ7jlBMz50M9thrDee7b27CsrZolay7tq+cPFrq4Q==}
+    engines: {node: '>=12.0.0'}
+    peerDependencies:
+      '@mui/material': ^5.4.1
+      '@mui/system': ^5.4.1
+      react: ^17.0.2 || ^18.0.0
+      react-dom: ^17.0.2 || ^18.0.0
+    dependencies:
+      '@babel/runtime': 7.20.13
+      '@mui/material': 5.11.7_rqh7qj4464ntrqrt6banhaqg4q
+      '@mui/utils': 5.11.7_react@18.2.0
+      clsx: 1.2.1
+      prop-types: 15.8.1
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+      reselect: 4.1.7
     dev: false
 
   /@mui/x-date-pickers/5.0.17_qo5tbv3wjsnulj3odbgeoxieku:
@@ -5614,6 +5635,10 @@ packages:
 
   /remove-accents/0.4.2:
     resolution: {integrity: sha512-7pXIJqJOq5tFgG1A2Zxti3Ht8jJF337m4sowbuHsW30ZnkQFnDzy9qBNhgzX8ZLW4+UBcXiiR7SwR6pokHsxiA==}
+    dev: false
+
+  /reselect/4.1.7:
+    resolution: {integrity: sha512-Zu1xbUt3/OPwsXL46hvOOoQrap2azE7ZQbokq61BQfiXvhewsKDwhMeZjTX9sX0nvw1t/U5Audyn1I9P/m9z0A==}
     dev: false
 
   /resize-observer-polyfill/1.5.1:

@@ -5,6 +5,7 @@ import DarkModeIcon from "@mui/icons-material/DarkMode";
 import ArticleIcon from "@mui/icons-material/Article";
 import PersonIcon from "@mui/icons-material/Person";
 import AddIcon from "@mui/icons-material/Add";
+import HomeIcon from "@mui/icons-material/Home";
 import {
   Toolbar,
   Divider,
@@ -94,7 +95,6 @@ const ResponsiveDrawer = ({ drawerWidth, toggleTheme, isDarkTheme }: Props) => {
   const addPage = () => {
     if (user?.$id) {
       const userId = user.$id;
-      console.log(userId);
       const promise = appwrite.database.createDocument(
         Server.databaseID,
         userId,
@@ -153,7 +153,7 @@ const ResponsiveDrawer = ({ drawerWidth, toggleTheme, isDarkTheme }: Props) => {
               href="/"
             >
               <ListItemIcon>
-                <ArticleIcon />
+                <HomeIcon />
               </ListItemIcon>
               <ListItemText primary="Home" />
             </ListItemButton>
