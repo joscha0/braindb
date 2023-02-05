@@ -43,7 +43,8 @@ import {
   DropdownButton,
   CommandMenuItem,
 } from "@remirror/react";
-import { Box, IconButton, Paper, Popper, Typography } from "@mui/material";
+import { Box, IconButton, Input, Paper, Popper } from "@mui/material";
+
 import { useCallback, useState } from "react";
 import type { RemirrorJSON } from "remirror";
 import SearchIcon from "@mui/icons-material/Search";
@@ -100,6 +101,7 @@ const Editor: NextPage<Props> = (props) => {
     stringHandler: "html",
   });
 
+  const [nameEdit, setName] = useState(name);
   const [user] = useRecoilState(userState);
   const [isSaving, setIsSaving] = useState(false);
 
@@ -111,15 +113,40 @@ const Editor: NextPage<Props> = (props) => {
         userId,
         pageId,
         {
-          name: "test1",
           content: JSON.stringify(json),
+        }
+      );
+      promise.then(
+        function (response) {
+          console.log(response); // Success
+          setIsSaving(false);
         },
-        [
-          Permission.read(Role.user(userId)),
-          Permission.update(Role.user(userId)),
-          Permission.delete(Role.user(userId)),
-          Permission.write(Role.user(userId)),
-        ]
+        function (error) {
+          console.log(error); // Failure
+          setIsSaving(false);
+        }
+      );
+    }
+  };
+
+  const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setName(event.target.value);
+    if (!isSaving) {
+      setIsSaving(true);
+      saveName(event.target.value);
+    }
+  };
+
+  const saveName = (newName: string) => {
+    if (user?.$id) {
+      const userId = user.$id;
+      const promise = appwrite.database.updateDocument(
+        Server.databaseID,
+        userId,
+        pageId,
+        {
+          name: newName,
+        }
       );
       promise.then(
         function (response) {
@@ -171,7 +198,12 @@ const Editor: NextPage<Props> = (props) => {
           }}
         >
           <Toolbar>
-            <Typography>{name}</Typography>
+            <Input
+              defaultValue={name}
+              value={nameEdit}
+              sx={{ m: 2 }}
+              onChange={handleNameChange}
+            />
             <HistoryButtonGroup />
             <BasicFormattingButtonGroup />
             <HeadingLevelButtonGroup showAll />
