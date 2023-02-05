@@ -1,6 +1,6 @@
 import { Client as Appwrite, Account, Databases } from "appwrite";
 import { atom } from "recoil";
-import { User } from "./types";
+import { User, Page } from "./types";
 
 export const Server: {
   endpoint: string;
@@ -23,4 +23,9 @@ export const appwrite = { account, database };
 export const userState = atom<User | null>({
   key: "user",
   default: null,
+});
+
+export const pagesState = atom<Page[]>({
+  key: "pages",
+  default: [],
 });

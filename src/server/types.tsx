@@ -4,4 +4,10 @@ type User = {
   name: string;
 };
 
-export type { User };
+type Page = {
+  $id: string;
+  name: string;
+  content: string;
+};
+
+export type { User, Page };
