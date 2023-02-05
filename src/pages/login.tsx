@@ -8,14 +8,26 @@ import { NextPage } from "next";
 import Head from "next/head";
 import { Alert, Box, Link, TextField, Typography } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
-import { FormContainer, TextFieldElement } from "react-hook-form-mui";
+import { FormContainer, TextFieldElement, useForm } from "react-hook-form-mui";
 import { ID } from "appwrite";
+import { literal, object, string, TypeOf } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 type FormProps = {
-  name: string;
   email: string;
   password: string;
 };
+
+const loginSchema = object({
+  email: string().min(1, "Email is required").email("Email is invalid"),
+  password: string()
+    .min(1, "Password is required")
+    .min(8, "Password must be more than 8 characters")
+    .max(32, "Password must be less than 32 characters"),
+  persistUser: literal(true).optional(),
+});
+
+type ILogin = TypeOf<typeof loginSchema>;
 
 const Login: NextPage = () => {
   const [alert, setAlert] = useState("");
@@ -23,7 +35,19 @@ const Login: NextPage = () => {
   const [user, setUser] = useRecoilState(userState);
   const router = useRouter();
 
-  const signup = async (values: FormProps) => {
+  const defaultValues: ILogin = {
+    email: "",
+    password: "",
+  };
+
+  const formContext = useForm<ILogin>({
+    resolver: zodResolver(loginSchema),
+    defaultValues,
+  });
+
+  const { handleSubmit } = formContext;
+
+  const login = async (values: FormProps) => {
     try {
       setLoading(true);
       setUser(
@@ -65,7 +89,10 @@ const Login: NextPage = () => {
 
           {alert && <Alert severity="error">{alert}</Alert>}
 
-          <FormContainer onSuccess={signup}>
+          <FormContainer
+            formContext={formContext}
+            handleSubmit={handleSubmit(login)}
+          >
             <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
               <TextFieldElement
                 label="Email"
