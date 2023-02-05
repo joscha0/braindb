@@ -4,9 +4,9 @@ import Head from "next/head";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { RemirrorJSON } from "remirror";
+import type { RemirrorJSON } from "remirror";
 import { useRecoilState } from "recoil";
-import { appwrite, pagesState, Server, userState } from "../../server/global";
+import { appwrite, Server, userState } from "../../server/global";
 import type { User, Page } from "../../server/types";
 
 const Editor = dynamic(() => import("../../components/editor"), {
@@ -15,8 +15,8 @@ const Editor = dynamic(() => import("../../components/editor"), {
 
 const Page: NextPage = () => {
   const [initialContent, setInitialContent] = useState<
-    RemirrorJSON | undefined | null
-  >(null);
+    RemirrorJSON | undefined
+  >(undefined);
   const [name, setName] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [user, setUser] = useRecoilState(userState);
@@ -49,7 +49,7 @@ const Page: NextPage = () => {
         }
       );
     }
-  }, [user]);
+  }, [user, id]);
 
   useEffect(() => {
     if (user) return;
@@ -80,7 +80,7 @@ const Page: NextPage = () => {
             <CircularProgress />
           ) : (
             <Editor
-              initialContent={initialContent!}
+              initialContent={initialContent}
               pageId={id as string}
               name={name}
             />
