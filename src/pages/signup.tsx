@@ -8,8 +8,10 @@ import { NextPage } from "next";
 import Head from "next/head";
 import { Alert, Box, Link, TextField, Typography } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
-import { FormContainer, TextFieldElement } from "react-hook-form-mui";
+import { FormContainer, TextFieldElement, useForm } from "react-hook-form-mui";
 import { ID } from "appwrite";
+import { object, string, TypeOf } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 type FormProps = {
   name: string;
@@ -17,11 +19,40 @@ type FormProps = {
   password: string;
 };
 
+const signupSchema = object({
+  name: string().min(1, "Name is required").max(70),
+  email: string().min(1, "Email is required").email("Email is invalid"),
+  password: string()
+    .min(1, "Password is required")
+    .min(8, "Password must be more than 8 characters")
+    .max(32, "Password must be less than 32 characters"),
+  passwordConfirm: string().min(1, "Please confirm your password"),
+}).refine((data) => data.password === data.passwordConfirm, {
+  path: ["passwordConfirm"],
+  message: "Passwords do not match",
+});
+
+type ISignUp = TypeOf<typeof signupSchema>;
+
 const SignUp: NextPage = () => {
   const [alert, setAlert] = useState("");
 
   const [user, setUser] = useRecoilState(userState);
   const router = useRouter();
+
+  const defaultValues: ISignUp = {
+    name: "",
+    email: "",
+    password: "",
+    passwordConfirm: "",
+  };
+
+  const formContext = useForm<ISignUp>({
+    resolver: zodResolver(signupSchema),
+    defaultValues,
+  });
+
+  const { handleSubmit } = formContext;
 
   const signup = async (values: FormProps) => {
     try {
@@ -68,7 +99,10 @@ const SignUp: NextPage = () => {
 
           {alert && <Alert severity="error">{alert}</Alert>}
 
-          <FormContainer onSuccess={signup}>
+          <FormContainer
+            formContext={formContext}
+            handleSubmit={handleSubmit(signup)}
+          >
             <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
               <TextFieldElement label="Name" type="text" name="name" required />
               <TextFieldElement
@@ -81,6 +115,12 @@ const SignUp: NextPage = () => {
                 type="password"
                 label="Password"
                 name="password"
+                required
+              />
+              <TextFieldElement
+                type="password"
+                label="Confirm Password"
+                name="passwordConfirm"
                 required
               />
               <Typography>
