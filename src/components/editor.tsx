@@ -49,7 +49,7 @@ import type { RemirrorJSON } from "remirror";
 import SearchIcon from "@mui/icons-material/Search";
 import type { NextPage } from "next";
 import { useRecoilState } from "recoil";
-import { appwrite, pagesState, Server, userState } from "../server/global";
+import { appwrite, Server, userState } from "../server/global";
 import { Permission, Role } from "appwrite";
 
 const extensions = () => [
@@ -85,11 +85,13 @@ const extensions = () => [
 // };
 
 interface Props {
+  name: string;
+  initialContent: RemirrorJSON | undefined;
   pageId: string;
 }
 
 const Editor: NextPage<Props> = (props) => {
-  const { pageId } = props;
+  const { name, initialContent, pageId } = props;
 
   const { manager, onChange } = useRemirror({
     extensions,
@@ -98,22 +100,8 @@ const Editor: NextPage<Props> = (props) => {
     stringHandler: "html",
   });
 
-  const [pages] = useRecoilState(pagesState);
   const [user] = useRecoilState(userState);
   const [isSaving, setIsSaving] = useState(false);
-
-  const [initialContent] = useState<RemirrorJSON | undefined>(() => {
-    // Retrieve the JSON from localStorage (or undefined if not found)
-    const content = pages.find((page) => page.$id === pageId)?.content;
-    console.log(content);
-    const json = content ? (JSON.parse(content) as RemirrorJSON) : undefined;
-    return json;
-  });
-
-  //   useEffect(() => {
-  //     const content = pages.find((page) => page.$id === pageId);
-  //     console.log(content);
-  //   }, []);
 
   const saveCloud = (json: RemirrorJSON) => {
     if (user?.$id) {
@@ -183,7 +171,7 @@ const Editor: NextPage<Props> = (props) => {
           }}
         >
           <Toolbar>
-            <Typography>{}</Typography>
+            <Typography>{name}</Typography>
             <HistoryButtonGroup />
             <BasicFormattingButtonGroup />
             <HeadingLevelButtonGroup showAll />
