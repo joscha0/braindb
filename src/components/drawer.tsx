@@ -4,6 +4,7 @@ import LightModeIcon from "@mui/icons-material/LightMode";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import ArticleIcon from "@mui/icons-material/Article";
 import PersonIcon from "@mui/icons-material/Person";
+import AddIcon from "@mui/icons-material/Add";
 import {
   Toolbar,
   Divider,
@@ -17,11 +18,16 @@ import {
   IconButton,
   Typography,
   ListSubheader,
+  CircularProgress,
 } from "@mui/material";
 import Link from "next/link";
 
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import { appwrite, pagesState, Server, userState } from "../server/global";
+import { useRecoilState } from "recoil";
+import { Page, User } from "../server/types";
+import { ID, Permission, Role } from "appwrite";
 
 interface Props {
   drawerWidth: number;
@@ -33,6 +39,10 @@ const ResponsiveDrawer = ({ drawerWidth, toggleTheme, isDarkTheme }: Props) => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState("");
   const router = useRouter();
+
+  const [isLoading, setIsLoading] = useState(true);
+  const [pages, setPages] = useRecoilState(pagesState);
+  const [user, setUser] = useRecoilState(userState);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -52,6 +62,67 @@ const ResponsiveDrawer = ({ drawerWidth, toggleTheme, isDarkTheme }: Props) => {
       router.events.off("routeChangeStart", handleRouteChange);
     };
   }, [router]);
+
+  useEffect(() => {
+    if (user?.$id) {
+      const promise = appwrite.database.listDocuments(
+        Server.databaseID,
+        user!.$id
+      );
+
+      promise.then(
+        function (response) {
+          console.log(response); // Success
+          setPages(response.documents as unknown as Page[]);
+          setIsLoading(false);
+        },
+        function (error) {
+          console.log(error); // Failure
+          setIsLoading(false);
+        }
+      );
+    }
+  }, [user]);
+
+  useEffect(() => {
+    if (user) return;
+    const fetchData = async () => {
+      const response = await appwrite.account.get();
+      setUser(response as User);
+    };
+    fetchData();
+  }, []);
+
+  const addPage = async () => {
+    if (user?.$id) {
+      const userId = user!.$id;
+      console.log(userId);
+      const promise = appwrite.database.createDocument(
+        Server.databaseID,
+        userId,
+        ID.unique(),
+        {
+          name: "test1",
+          content: "test test",
+        },
+        [
+          Permission.read(Role.user(userId)),
+          Permission.update(Role.user(userId)),
+          Permission.delete(Role.user(userId)),
+          Permission.write(Role.user(userId)),
+        ]
+      );
+      promise.then(
+        function (response) {
+          console.log(response); // Success
+          setPages((pages ?? []).concat(response as unknown as Page));
+        },
+        function (error) {
+          console.log(error); // Failure
+        }
+      );
+    }
+  };
 
   const drawer = (
     <Box onClick={handleDrawerToggle}>
@@ -100,9 +171,32 @@ const ResponsiveDrawer = ({ drawerWidth, toggleTheme, isDarkTheme }: Props) => {
               <ListItemText primary="Account" />
             </ListItemButton>
           </ListItem>
-          <ListSubheader component="div" id="nested-list-subheader">
-            Recent Pages
-          </ListSubheader>
+          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+            <ListSubheader component="div" id="nested-list-subheader">
+              Recent Pages
+            </ListSubheader>
+            <IconButton onClick={addPage}>
+              <AddIcon />
+            </IconButton>
+          </Box>
+          {isLoading ? (
+            <CircularProgress />
+          ) : (
+            (pages ?? []).map((page: Page) => (
+              <ListItem disablePadding key={page.$id}>
+                <ListItemButton
+                  selected={currentPage === "/page"}
+                  component={Link}
+                  href="/page"
+                >
+                  <ListItemIcon>
+                    <PersonIcon />
+                  </ListItemIcon>
+                  <ListItemText primary={page.name} />
+                </ListItemButton>
+              </ListItem>
+            ))
+          )}
         </List>
         <Box sx={{ display: "flex", justifyContent: "space-around" }}>
           <IconButton
