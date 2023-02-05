@@ -44,13 +44,12 @@ import {
   CommandMenuItem,
 } from "@remirror/react";
 import { Box, IconButton, Paper, Popper, Typography } from "@mui/material";
-import { useCallback, useEffect, useState } from "react";
-import { ProsemirrorNode, RemirrorJSON } from "remirror";
+import { useCallback, useState } from "react";
+import type { RemirrorJSON } from "remirror";
 import SearchIcon from "@mui/icons-material/Search";
-import { NextPage } from "next";
+import type { NextPage } from "next";
 import { useRecoilState } from "recoil";
 import { appwrite, pagesState, Server, userState } from "../server/global";
-import { json } from "stream/consumers";
 import { Permission, Role } from "appwrite";
 
 const extensions = () => [
@@ -92,24 +91,22 @@ interface Props {
 const Editor: NextPage<Props> = (props) => {
   const { pageId } = props;
 
-  const { manager, state, onChange } = useRemirror({
+  const { manager, onChange } = useRemirror({
     extensions,
     content: "",
     selection: "end",
     stringHandler: "html",
   });
 
-  const [pages, setPages] = useRecoilState(pagesState);
-  const [user, setUser] = useRecoilState(userState);
+  const [pages] = useRecoilState(pagesState);
+  const [user] = useRecoilState(userState);
   const [isSaving, setIsSaving] = useState(false);
 
   const [initialContent] = useState<RemirrorJSON | undefined>(() => {
     // Retrieve the JSON from localStorage (or undefined if not found)
     const content = pages.find((page) => page.$id === pageId)?.content;
     console.log(content);
-    const json: RemirrorJSON | undefined = content
-      ? JSON.parse(content)
-      : undefined;
+    const json = content ? (JSON.parse(content) as RemirrorJSON) : undefined;
     return json;
   });
 
@@ -118,16 +115,9 @@ const Editor: NextPage<Props> = (props) => {
   //     console.log(content);
   //   }, []);
 
-  const handleEditorChange = useCallback((json: RemirrorJSON) => {
-    if (!isSaving) {
-      setIsSaving(true);
-      saveCloud(json);
-    }
-  }, []);
-
-  const saveCloud = async (json: RemirrorJSON) => {
+  const saveCloud = (json: RemirrorJSON) => {
     if (user?.$id) {
-      const userId = user!.$id;
+      const userId = user.$id;
       const promise = appwrite.database.updateDocument(
         Server.databaseID,
         userId,
@@ -155,6 +145,16 @@ const Editor: NextPage<Props> = (props) => {
       );
     }
   };
+
+  const handleEditorChange = useCallback(
+    (json: RemirrorJSON) => {
+      if (!isSaving) {
+        setIsSaving(true);
+        saveCloud(json);
+      }
+    },
+    [isSaving]
+  );
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 

@@ -3,14 +3,13 @@ import NextLink from "next/link";
 import { useRouter } from "next/router";
 import { useRecoilState } from "recoil";
 import { appwrite, userState } from "../server/global";
-import { User } from "../server/types";
-import { NextPage } from "next";
+import type { User } from "../server/types";
+import type { NextPage } from "next";
 import Head from "next/head";
-import { Alert, Box, Link, TextField, Typography } from "@mui/material";
+import { Alert, Box, Link, Typography } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import { FormContainer, TextFieldElement, useForm } from "react-hook-form-mui";
-import { ID } from "appwrite";
-import { literal, object, string, TypeOf } from "zod";
+import { literal, object, string, type TypeOf } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 type FormProps = {
@@ -57,7 +56,7 @@ const Login: NextPage = () => {
         )) as unknown as User
       );
       setLoading(false);
-      router.push("/");
+      await router.push("/");
     } catch (error) {
       setAlert((error as Error).message);
       setLoading(false);
@@ -107,7 +106,7 @@ const Login: NextPage = () => {
                 required
               />
               <Typography>
-                Don't have an account?{" "}
+                Don&apos;t have an account?{" "}
                 <Link component={NextLink} href="/signup">
                   Sign Up
                 </Link>

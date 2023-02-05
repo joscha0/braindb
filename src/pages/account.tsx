@@ -5,7 +5,7 @@ import router from "next/router";
 import { useEffect } from "react";
 import { useRecoilState } from "recoil";
 import { appwrite, userState } from "../server/global";
-import { User } from "../server/types";
+import type { User } from "../server/types";
 
 const Account: NextPage = () => {
   const [user, setUser] = useRecoilState(userState);
@@ -15,7 +15,7 @@ const Account: NextPage = () => {
     setUser(null);
     window.localStorage.removeItem("jwt");
     window.localStorage.removeItem("jwt_expire");
-    router.push("/login");
+    await router.push("/login");
   };
   useEffect(() => {
     if (user) return;
@@ -24,7 +24,7 @@ const Account: NextPage = () => {
       .get()
       .then((response: User) => setUser(response))
       .catch(() => router.push("/login"));
-  }, [router]);
+  }, [user, setUser]);
 
   return (
     <>
@@ -46,7 +46,7 @@ const Account: NextPage = () => {
         >
           <Typography>Account</Typography>
           <Typography>{user?.email}</Typography>
-          <Button onClick={logout}>Logout</Button>
+          <Button onClick={() => void logout()}>Logout</Button>
         </Box>
       </main>
     </>

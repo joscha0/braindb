@@ -26,7 +26,7 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { appwrite, pagesState, Server, userState } from "../server/global";
 import { useRecoilState } from "recoil";
-import { Page, User } from "../server/types";
+import type { Page, User } from "../server/types";
 import { ID, Permission, Role } from "appwrite";
 
 interface Props {
@@ -67,7 +67,7 @@ const ResponsiveDrawer = ({ drawerWidth, toggleTheme, isDarkTheme }: Props) => {
     if (user?.$id) {
       const promise = appwrite.database.listDocuments(
         Server.databaseID,
-        user!.$id
+        user.$id
       );
 
       promise.then(
@@ -81,20 +81,19 @@ const ResponsiveDrawer = ({ drawerWidth, toggleTheme, isDarkTheme }: Props) => {
         }
       );
     }
-  }, [user]);
+  }, [user, setPages]);
 
   useEffect(() => {
     if (user) return;
-    const fetchData = async () => {
-      const response = await appwrite.account.get();
-      setUser(response as User);
-    };
-    fetchData();
-  }, []);
+    appwrite.account
+      .get()
+      .then((response: User) => setUser(response))
+      .catch((error: Error) => console.log(error));
+  }, [user, setUser]);
 
-  const addPage = async () => {
+  const addPage = () => {
     if (user?.$id) {
-      const userId = user!.$id;
+      const userId = user.$id;
       console.log(userId);
       const promise = appwrite.database.createDocument(
         Server.databaseID,

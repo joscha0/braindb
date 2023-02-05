@@ -1,6 +1,6 @@
 import { Client as Appwrite, Account, Databases } from "appwrite";
 import { atom } from "recoil";
-import { User, Page } from "./types";
+import type { User, Page } from "./types";
 
 export const Server: {
   endpoint: string;
