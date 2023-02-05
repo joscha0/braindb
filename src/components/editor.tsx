@@ -50,8 +50,9 @@ import type { RemirrorJSON } from "remirror";
 import SearchIcon from "@mui/icons-material/Search";
 import type { NextPage } from "next";
 import { useRecoilState } from "recoil";
-import { appwrite, Server, userState } from "../server/global";
+import { appwrite, pagesState, Server, userState } from "../server/global";
 import { Permission, Role } from "appwrite";
+import { replaceItemAtIndex } from "../services/helper";
 
 const extensions = () => [
   new HeadingExtension(),
@@ -102,6 +103,7 @@ const Editor: NextPage<Props> = (props) => {
   });
 
   const [nameEdit, setName] = useState(name);
+  const [pages, setPages] = useRecoilState(pagesState);
   const [user] = useRecoilState(userState);
   const [isSaving, setIsSaving] = useState(false);
 
@@ -131,6 +133,13 @@ const Editor: NextPage<Props> = (props) => {
 
   const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
+    const pageIndex = pages.findIndex((page) => page.$id === pageId);
+    const newPages = replaceItemAtIndex(pages, pageIndex, {
+      $id: pageId,
+      name: event.target.value,
+      content: "",
+    });
+    setPages(newPages);
     if (!isSaving) {
       setIsSaving(true);
       saveName(event.target.value);
