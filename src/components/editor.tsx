@@ -43,10 +43,15 @@ import {
   DropdownButton,
   CommandMenuItem,
 } from "@remirror/react";
-import { Box, IconButton, Paper, Popper } from "@mui/material";
-import { useCallback, useState } from "react";
+import { Box, IconButton, Paper, Popper, Typography } from "@mui/material";
+import { useCallback, useEffect, useState } from "react";
 import { ProsemirrorNode, RemirrorJSON } from "remirror";
 import SearchIcon from "@mui/icons-material/Search";
+import { NextPage } from "next";
+import { useRecoilState } from "recoil";
+import { appwrite, pagesState, Server, userState } from "../server/global";
+import { json } from "stream/consumers";
+import { Permission, Role } from "appwrite";
 
 const extensions = () => [
   new HeadingExtension(),
@@ -74,15 +79,19 @@ const extensions = () => [
   }),
 ];
 
-const STORAGE_KEY = "remirror-editor-content";
-
 // const renderEmoji = (node: ProsemirrorNode) => {
 //   const emoji = document.createElement("span");
 //   emoji.textContent = node.attrs.emoji;
 //   return emoji;
 // };
 
-const Editor: React.FC = () => {
+interface Props {
+  pageId: string;
+}
+
+const Editor: NextPage<Props> = (props) => {
+  const { pageId } = props;
+
   const { manager, state, onChange } = useRemirror({
     extensions,
     content: "",
@@ -90,19 +99,62 @@ const Editor: React.FC = () => {
     stringHandler: "html",
   });
 
+  const [pages, setPages] = useRecoilState(pagesState);
+  const [user, setUser] = useRecoilState(userState);
+  const [isSaving, setIsSaving] = useState(false);
+
   const [initialContent] = useState<RemirrorJSON | undefined>(() => {
     // Retrieve the JSON from localStorage (or undefined if not found)
-    const content = window.localStorage.getItem(STORAGE_KEY);
+    const content = pages.find((page) => page.$id === pageId)?.content;
+    console.log(content);
     const json: RemirrorJSON | undefined = content
       ? JSON.parse(content)
       : undefined;
     return json;
   });
 
+  //   useEffect(() => {
+  //     const content = pages.find((page) => page.$id === pageId);
+  //     console.log(content);
+  //   }, []);
+
   const handleEditorChange = useCallback((json: RemirrorJSON) => {
-    // Store the JSON in localStorage
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(json));
+    if (!isSaving) {
+      setIsSaving(true);
+      saveCloud(json);
+    }
   }, []);
+
+  const saveCloud = async (json: RemirrorJSON) => {
+    if (user?.$id) {
+      const userId = user!.$id;
+      const promise = appwrite.database.updateDocument(
+        Server.databaseID,
+        userId,
+        pageId,
+        {
+          name: "test1",
+          content: JSON.stringify(json),
+        },
+        [
+          Permission.read(Role.user(userId)),
+          Permission.update(Role.user(userId)),
+          Permission.delete(Role.user(userId)),
+          Permission.write(Role.user(userId)),
+        ]
+      );
+      promise.then(
+        function (response) {
+          console.log(response); // Success
+          setIsSaving(false);
+        },
+        function (error) {
+          console.log(error); // Failure
+          setIsSaving(false);
+        }
+      );
+    }
+  };
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
@@ -131,6 +183,7 @@ const Editor: React.FC = () => {
           }}
         >
           <Toolbar>
+            <Typography>{}</Typography>
             <HistoryButtonGroup />
             <BasicFormattingButtonGroup />
             <HeadingLevelButtonGroup showAll />

@@ -72,7 +72,6 @@ const ResponsiveDrawer = ({ drawerWidth, toggleTheme, isDarkTheme }: Props) => {
 
       promise.then(
         function (response) {
-          console.log(response); // Success
           setPages(response.documents as unknown as Page[]);
           setIsLoading(false);
         },
@@ -103,7 +102,7 @@ const ResponsiveDrawer = ({ drawerWidth, toggleTheme, isDarkTheme }: Props) => {
         ID.unique(),
         {
           name: "test1",
-          content: "test test",
+          content: '{"type": "doc","content": []}',
         },
         [
           Permission.read(Role.user(userId)),
@@ -114,7 +113,6 @@ const ResponsiveDrawer = ({ drawerWidth, toggleTheme, isDarkTheme }: Props) => {
       );
       promise.then(
         function (response) {
-          console.log(response); // Success
           setPages((pages ?? []).concat(response as unknown as Page));
         },
         function (error) {
@@ -185,9 +183,9 @@ const ResponsiveDrawer = ({ drawerWidth, toggleTheme, isDarkTheme }: Props) => {
             (pages ?? []).map((page: Page) => (
               <ListItem disablePadding key={page.$id}>
                 <ListItemButton
-                  selected={currentPage === "/page"}
+                  selected={currentPage === "/page/" + page.$id}
                   component={Link}
-                  href="/page"
+                  href={"/page/" + page.$id}
                 >
                   <ListItemIcon>
                     <PersonIcon />
