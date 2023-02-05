@@ -6,11 +6,11 @@ import { z } from "zod";
  * This way you can ensure the app isn't built with invalid env vars.
  */
 export const serverSchema = z.object({
-  REACT_APP_ENDPOINT: z.string().url(),
+  NEXT_PUBLIC_APPWRITE_ENDPOINT: z.string().url(),
   NODE_ENV: z.enum(["development", "test", "production"]),
 
-  REACT_APP_PROJECT: z.string(),
-  REACT_APP_DATABASE_ID: z.string(),
+  NEXT_PUBLIC_APPWRITE_PROJECT: z.string(),
+  NEXT_PUBLIC_APPWRITE_DATABASE_ID: z.string(),
 });
 
 /**
@@ -20,9 +20,10 @@ export const serverSchema = z.object({
  */
 export const serverEnv = {
   NODE_ENV: process.env.NODE_ENV,
-  REACT_APP_ENDPOINT: process.env.REACT_APP_ENDPOINT,
-  REACT_APP_PROJECT: process.env.REACT_APP_PROJECT,
-  REACT_APP_DATABASE_ID: process.env.REACT_APP_DATABASE_ID,
+  NEXT_PUBLIC_APPWRITE_ENDPOINT: process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT,
+  NEXT_PUBLIC_APPWRITE_PROJECT: process.env.NEXT_PUBLIC_APPWRITE_PROJECT,
+  NEXT_PUBLIC_APPWRITE_DATABASE_ID:
+    process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID,
 };
 
 /**
