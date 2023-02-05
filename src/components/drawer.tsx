@@ -100,7 +100,7 @@ const ResponsiveDrawer = ({ drawerWidth, toggleTheme, isDarkTheme }: Props) => {
         userId,
         ID.unique(),
         {
-          name: "test1",
+          name: "New Page",
           content: '{"type": "doc","content": []}',
         },
         [
@@ -112,7 +112,9 @@ const ResponsiveDrawer = ({ drawerWidth, toggleTheme, isDarkTheme }: Props) => {
       );
       promise.then(
         function (response) {
-          setPages((pages ?? []).concat(response as unknown as Page));
+          const newPage = response as unknown as Page;
+          setPages((pages ?? []).concat(newPage));
+          router.push("/page/" + newPage.$id);
         },
         function (error) {
           console.log(error); // Failure
@@ -187,7 +189,7 @@ const ResponsiveDrawer = ({ drawerWidth, toggleTheme, isDarkTheme }: Props) => {
                   href={"/page/" + page.$id}
                 >
                   <ListItemIcon>
-                    <PersonIcon />
+                    <ArticleIcon />
                   </ListItemIcon>
                   <ListItemText primary={page.name} />
                 </ListItemButton>
