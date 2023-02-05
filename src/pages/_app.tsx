@@ -5,6 +5,7 @@ import { useState } from "react";
 import { darkTheme, lightTheme } from "../services/themes";
 import ResponsiveDrawer from "../components/drawer";
 import { RecoilRoot } from "recoil";
+import { useRouter } from "next/router";
 
 const MyApp: AppType = ({ Component, pageProps: { ...pageProps } }) => {
   const [isDarkTheme, setIsDarkTheme] = useState(true);
@@ -14,6 +15,8 @@ const MyApp: AppType = ({ Component, pageProps: { ...pageProps } }) => {
     setIsDarkTheme(!isDarkTheme);
   };
   const drawerWidth = 240;
+
+  const router = useRouter();
 
   return (
     <RecoilRoot>
@@ -32,7 +35,7 @@ const MyApp: AppType = ({ Component, pageProps: { ...pageProps } }) => {
               width: { sm: `calc(100% - ${drawerWidth}px)` },
             }}
           >
-            <Component {...pageProps} />
+            <Component {...pageProps} key={router.asPath} />
           </Box>
         </Box>
       </ThemeProvider>
