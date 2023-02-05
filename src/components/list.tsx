@@ -10,7 +10,7 @@ import {
   GridToolbarQuickFilter,
 } from "@mui/x-data-grid";
 import Link from "next/link";
-import { Page } from "../server/types";
+import type { Page } from "../server/types";
 
 interface ListProps {
   pages: Page[];
@@ -23,7 +23,7 @@ const List = ({ pages }: ListProps) => {
       headerName: "Id",
       width: 150,
       renderCell: (params) => (
-        <Link href={"/page/" + params.value}>{params.value} </Link>
+        <Link href={`/page/${params.value as string}`}>{params.value} </Link>
       ),
     },
     {
@@ -44,7 +44,7 @@ const List = ({ pages }: ListProps) => {
       <DataGrid
         sx={{ border: 0 }}
         rows={pages}
-        getRowId={(row) => row.$id}
+        getRowId={(row: Page) => row.$id}
         columns={columns}
         pageSize={50}
         components={{

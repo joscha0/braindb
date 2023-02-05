@@ -111,10 +111,10 @@ const ResponsiveDrawer = ({ drawerWidth, toggleTheme, isDarkTheme }: Props) => {
         ]
       );
       promise.then(
-        function (response) {
+        async function (response) {
           const newPage = response as unknown as Page;
           setPages((pages ?? []).concat(newPage));
-          router.push("/page/" + newPage.$id);
+          await router.push("/page/" + newPage.$id);
         },
         function (error) {
           console.log(error); // Failure

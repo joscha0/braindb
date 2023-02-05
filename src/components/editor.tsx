@@ -51,7 +51,6 @@ import SearchIcon from "@mui/icons-material/Search";
 import type { NextPage } from "next";
 import { useRecoilState } from "recoil";
 import { appwrite, pagesState, Server, userState } from "../server/global";
-import { Permission, Role } from "appwrite";
 import { replaceItemAtIndex } from "../services/helper";
 
 const extensions = () => [

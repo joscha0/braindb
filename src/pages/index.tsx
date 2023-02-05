@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import List from "../components/list";
 import { appwrite, pagesState, Server, userState } from "../server/global";
-import { Page, User } from "../server/types";
+import type { Page, User } from "../server/types";
 
 const Home: NextPage = () => {
   const [isLoading, setLoading] = useState(true);
