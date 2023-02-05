@@ -3,6 +3,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import ArticleIcon from "@mui/icons-material/Article";
+import PersonIcon from "@mui/icons-material/Person";
 import {
   Toolbar,
   Divider,
@@ -89,12 +90,12 @@ const ResponsiveDrawer = ({ drawerWidth, toggleTheme, isDarkTheme }: Props) => {
           </ListItem>
           <ListItem disablePadding>
             <ListItemButton
-              selected={currentPage === "/signup"}
+              selected={currentPage === "/account"}
               component={Link}
-              href="/signup"
+              href="/account"
             >
               <ListItemIcon>
-                <ArticleIcon />
+                <PersonIcon />
               </ListItemIcon>
               <ListItemText primary="Account" />
             </ListItemButton>
