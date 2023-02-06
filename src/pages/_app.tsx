@@ -1,5 +1,6 @@
 import { type AppType } from "next/app";
 import "../styles/globals.css";
+import "../styles/styles.css";
 import { ThemeProvider, Box, CssBaseline } from "@mui/material";
 import { useState } from "react";
 import { darkTheme, lightTheme } from "../services/themes";
