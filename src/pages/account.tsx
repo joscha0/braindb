@@ -29,8 +29,8 @@ const Account: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Account - NoteTaky</title>
-        <meta name="description" content="Simple Note Taking" />
+        <title>Account - BrainDB</title>
+        <meta name="description" content="Smart Notes" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>

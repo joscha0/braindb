@@ -29,6 +29,7 @@ import { appwrite, pagesState, Server, userState } from "../server/global";
 import { useRecoilState } from "recoil";
 import type { Page, User } from "../server/types";
 import { ID, Permission, Role } from "appwrite";
+import Image from "next/image";
 
 interface Props {
   drawerWidth: number;
@@ -140,9 +141,16 @@ const ResponsiveDrawer = ({ drawerWidth, toggleTheme, isDarkTheme }: Props) => {
             <Box
               sx={{ display: "flex", py: 3, gap: 1, justifyContent: "center" }}
             >
+              <Image
+                src="/icons/icon-512.png"
+                alt="logo"
+                width={42}
+                height={42}
+                priority
+              />
               <Box>
-                <Typography fontWeight="bold">NoteTaky</Typography>
-                <Typography>Simple Note Taking</Typography>
+                <Typography fontWeight="bold">BrainDB</Typography>
+                <Typography>Smart Notes</Typography>
               </Box>
             </Box>
             <Divider />
@@ -215,7 +223,7 @@ const ResponsiveDrawer = ({ drawerWidth, toggleTheme, isDarkTheme }: Props) => {
           </IconButton>
           <IconButton
             component={Link}
-            href="https://github.com/joscha0/notetaky"
+            href="https://github.com/joscha0/braindb"
             target="_blank"
             aria-label="GitHub"
             rel="noreferrer"

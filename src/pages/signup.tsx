@@ -77,8 +77,8 @@ const SignUp: NextPage = () => {
   return (
     <>
       <Head>
-        <title>SignUp - NoteTaky</title>
-        <meta name="description" content="Simple Note Taking" />
+        <title>SignUp - BrainDB</title>
+        <meta name="description" content="Smart Notes" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>

@@ -61,8 +61,8 @@ const Page: NextPage = () => {
   return (
     <>
       <Head>
-        <title>NoteTaky</title>
-        <meta name="description" content="Simple Note Taking" />
+        <title>BrainDB</title>
+        <meta name="description" content="Smart Notes" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>

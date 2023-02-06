@@ -7,6 +7,7 @@ import { useRecoilState } from "recoil";
 import List from "../components/list";
 import { appwrite, pagesState, Server, userState } from "../server/global";
 import type { Page, User } from "../server/types";
+import Image from "next/image";
 
 const Home: NextPage = () => {
   const [isLoading, setLoading] = useState(true);
@@ -45,8 +46,8 @@ const Home: NextPage = () => {
   return (
     <>
       <Head>
-        <title>NoteTaky</title>
-        <meta name="description" content="Simple Note Taking" />
+        <title>BrainDB</title>
+        <meta name="description" content="Smart Notes" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
@@ -71,11 +72,20 @@ const Home: NextPage = () => {
                 display: "flex",
                 flexDirection: "column",
                 textAlign: "center",
+                justifyContent: "center",
+                alignItems: "center",
                 gap: 2,
               }}
             >
-              <Typography variant="h3">NoteTaky</Typography>
-              <Typography variant="h5">Simple Note Taking</Typography>
+              <Image
+                src="/icons/icon-512.png"
+                alt="logo"
+                width={100}
+                height={100}
+                priority
+              />
+              <Typography variant="h3">BrainDB</Typography>
+              <Typography variant="h5">Smart Notes</Typography>
               <Box sx={{ display: "flex", gap: 2, justifyContent: "center" }}>
                 <Button variant="outlined" component={Link} href="/login">
                   Login
