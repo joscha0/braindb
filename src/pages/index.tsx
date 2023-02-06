@@ -1,6 +1,7 @@
-import { Box, CircularProgress } from "@mui/material";
+import { Box, Button, CircularProgress, Typography } from "@mui/material";
 import { type NextPage } from "next";
 import Head from "next/head";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import List from "../components/list";
@@ -58,7 +59,33 @@ const Home: NextPage = () => {
             width: "100%",
           }}
         >
-          {isLoading ? <CircularProgress /> : <List pages={pages} />}
+          {user ? (
+            isLoading ? (
+              <CircularProgress />
+            ) : (
+              <List pages={pages} user={user} setPages={setPages} />
+            )
+          ) : (
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                textAlign: "center",
+                gap: 2,
+              }}
+            >
+              <Typography variant="h3">NoteTaky</Typography>
+              <Typography variant="h5">Simple Note Taking</Typography>
+              <Box sx={{ display: "flex", gap: 2, justifyContent: "center" }}>
+                <Button variant="outlined" component={Link} href="/login">
+                  Login
+                </Button>
+                <Button variant="contained" component={Link} href="/signup">
+                  Sign Up
+                </Button>
+              </Box>
+            </Box>
+          )}
         </Box>
       </main>
     </>
