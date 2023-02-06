@@ -5,7 +5,8 @@ from appwrite.client import Client
 # from appwrite.services.account import Account
 # from appwrite.services.avatars import Avatars
 from appwrite.services.databases import Databases
-from appwrite import Permission, Role
+from appwrite.permission import Permission
+from appwrite.role import Role
 # from appwrite.services.functions import Functions
 # from appwrite.services.health import Health
 # from appwrite.services.locale import Locale
