@@ -40,7 +40,6 @@ const Page: NextPage = () => {
             : undefined;
           setInitialContent(json);
           setName(page.name);
-          console.log(json);
           setIsLoading(false);
         },
         function (error) {

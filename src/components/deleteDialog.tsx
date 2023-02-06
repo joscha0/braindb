@@ -8,16 +8,15 @@ import {
   Button,
 } from "@mui/material";
 import { Remirror, useRemirror } from "@remirror/react";
-import { memo } from "react";
-import { RemirrorJSON } from "remirror";
+import type { RemirrorJSON } from "remirror";
 
-import { Page } from "../server/types";
+import type { Page } from "../server/types";
 import { extensions } from "./editor";
 
 interface DialogProps {
   open: boolean;
-  handleClose: any;
-  handleDelete: any;
+  handleClose: () => void;
+  handleDelete: () => void;
   deleteRow: Page;
 }
 
@@ -44,7 +43,7 @@ const DeleteDialog = ({
       aria-describedby="alert-dialog-description"
     >
       <DialogTitle id="alert-dialog-title">
-        Delete Page "<strong>{deleteRow.name}</strong>"?
+        Delete Page &quot;<strong>{deleteRow.name}</strong>&quot;?
       </DialogTitle>
       <DialogContent>
         <DialogContentText id="alert-dialog-description">

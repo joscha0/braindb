@@ -16,8 +16,8 @@ import type { Page, User } from "../server/types";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useState } from "react";
 import DeleteDialog from "./deleteDialog";
-import { SetterOrUpdater, useRecoilState } from "recoil";
-import { appwrite, pagesState, Server, userState } from "../server/global";
+import type { SetterOrUpdater } from "recoil";
+import { appwrite, Server } from "../server/global";
 import { removeItemAtIndex } from "../services/helper";
 interface ListProps {
   pages: Page[];
@@ -47,9 +47,7 @@ const List = ({ pages, user, setPages }: ListProps) => {
           deleteRow.$id
         );
 
-        promise.then(function (error) {
-          console.log(error); // Failure
-        });
+        promise.catch((error) => console.log(error));
       }
     }
     setDeleteRow(null);
@@ -88,9 +86,10 @@ const List = ({ pages, user, setPages }: ListProps) => {
       renderCell: (params) => {
         return [
           <GridActionsCellItem
+            key="deleteAction"
             icon={<DeleteIcon />}
             label="Delete"
-            onClick={handleDeleteClick(params.row)}
+            onClick={handleDeleteClick(params.row as Page)}
             color="inherit"
           />,
         ];

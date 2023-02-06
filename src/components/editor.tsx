@@ -118,10 +118,7 @@ const Editor: NextPage<Props> = (props) => {
         }
       );
       promise.then(
-        function (response) {
-          console.log(response); // Success
-          setIsSaving(false);
-        },
+        () => setIsSaving(false),
         function (error) {
           console.log(error); // Failure
           setIsSaving(false);
@@ -157,10 +154,7 @@ const Editor: NextPage<Props> = (props) => {
         }
       );
       promise.then(
-        function (response) {
-          console.log(response); // Success
-          setIsSaving(false);
-        },
+        () => setIsSaving(false),
         function (error) {
           console.log(error); // Failure
           setIsSaving(false);
