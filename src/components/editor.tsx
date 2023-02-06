@@ -53,7 +53,7 @@ import { useRecoilState } from "recoil";
 import { appwrite, pagesState, Server, userState } from "../server/global";
 import { replaceItemAtIndex } from "../services/helper";
 
-const extensions = () => [
+export const extensions = () => [
   new HeadingExtension(),
   new HistoryExtension(),
   new FindExtension(),
