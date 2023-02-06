@@ -6,19 +6,34 @@
  */
 !process.env.SKIP_ENV_VALIDATION && (await import("./src/env/server.mjs"));
 
-/** @type {import("next").NextConfig} */
-const config = {
-  reactStrictMode: true,
+import nextPWA from "next-pwa";
+import withBundleAnalyzer from "@next/bundle-analyzer";
 
-  /**
-   * If you have the "experimental: { appDir: true }" setting enabled, then you
-   * must comment the below `i18n` config out.
-   *
-   * @see https://github.com/vercel/next.js/issues/41980
-   */
+const withPWA = nextPWA({
+  dest: "public",
+  disable: process.env.NODE_ENV === "development",
+});
+
+/**
+ * @template {import('next').NextConfig} T
+ * @param {T} config - A generic parameter that flows through the return type
+ * @constraint {{import('next').NextConfig}}
+ */
+function defineNextConfig(config) {
+  return config;
+}
+
+const nextConfig = defineNextConfig({
+  reactStrictMode: true,
+  swcMinify: true,
   i18n: {
     locales: ["en"],
     defaultLocale: "en",
   },
-};
-export default config;
+});
+
+export default withPWA(
+  withBundleAnalyzer({
+    enabled: process.env.ANALYZE === "true",
+  })(nextConfig)
+);
