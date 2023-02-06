@@ -101,7 +101,8 @@ const ResponsiveDrawer = ({ drawerWidth, toggleTheme, isDarkTheme }: Props) => {
         ID.unique(),
         {
           name: "New Page",
-          content: '{"type": "doc","content": []}',
+          content:
+            '{"type":"doc","content":[{"type":"paragraph","attrs":{"nodeIndent":null,"nodeTextAlignment":null,"nodeLineHeight":null,"style":""}}]}',
         },
         [
           Permission.read(Role.user(userId)),
@@ -170,31 +171,39 @@ const ResponsiveDrawer = ({ drawerWidth, toggleTheme, isDarkTheme }: Props) => {
               <ListItemText primary="Account" />
             </ListItemButton>
           </ListItem>
-          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-            <ListSubheader component="div" id="nested-list-subheader">
-              Recent Pages
-            </ListSubheader>
-            <IconButton onClick={addPage}>
-              <AddIcon />
-            </IconButton>
-          </Box>
-          {isLoading ? (
-            <CircularProgress />
-          ) : (
-            (pages ?? []).map((page: Page) => (
-              <ListItem disablePadding key={page.$id}>
-                <ListItemButton
-                  selected={currentPage === "/page/" + page.$id}
-                  component={Link}
-                  href={"/page/" + page.$id}
-                >
-                  <ListItemIcon>
-                    <ArticleIcon />
-                  </ListItemIcon>
-                  <ListItemText primary={page.name} />
-                </ListItemButton>
-              </ListItem>
-            ))
+          {user && (
+            <>
+              <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                <ListSubheader component="div" id="nested-list-subheader">
+                  Recent Pages
+                </ListSubheader>
+                <IconButton onClick={addPage}>
+                  <AddIcon />
+                </IconButton>
+              </Box>
+              {isLoading ? (
+                <CircularProgress />
+              ) : (
+                (pages ?? [])
+                  .slice(0)
+                  .reverse()
+                  .slice(0, 10)
+                  .map((page: Page) => (
+                    <ListItem disablePadding key={page.$id}>
+                      <ListItemButton
+                        selected={currentPage === "/page/" + page.$id}
+                        component={Link}
+                        href={"/page/" + page.$id}
+                      >
+                        <ListItemIcon>
+                          <ArticleIcon />
+                        </ListItemIcon>
+                        <ListItemText primary={page.name} />
+                      </ListItemButton>
+                    </ListItem>
+                  ))
+              )}
+            </>
           )}
         </List>
         <Box sx={{ display: "flex", justifyContent: "space-around" }}>
