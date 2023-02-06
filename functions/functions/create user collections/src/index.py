@@ -2,15 +2,16 @@ import json
 from appwrite.client import Client
 
 # You can remove imports of services you don't use
-from appwrite.services.account import Account
-from appwrite.services.avatars import Avatars
+# from appwrite.services.account import Account
+# from appwrite.services.avatars import Avatars
 from appwrite.services.databases import Databases
-from appwrite.services.functions import Functions
-from appwrite.services.health import Health
-from appwrite.services.locale import Locale
-from appwrite.services.storage import Storage
-from appwrite.services.teams import Teams
-from appwrite.services.users import Users
+from appwrite import Permission, Role
+# from appwrite.services.functions import Functions
+# from appwrite.services.health import Health
+# from appwrite.services.locale import Locale
+# from appwrite.services.storage import Storage
+# from appwrite.services.teams import Teams
+# from appwrite.services.users import Users
 
 """
   'req' variable has:
@@ -52,7 +53,17 @@ def main(req, res):
     
   payload = json.loads(req.variables["APPWRITE_FUNCTION_EVENT_DATA"])
   userId = payload["$id"]
-  database.create_collection(req.variables["DATABASE_ID"], userId, userId)
+  database.create_collection(req.variables["DATABASE_ID"], userId, userId, [
+          Permission.read(Role.user(userId)),
+          Permission.update(Role.user(userId)),
+          Permission.delete(Role.user(userId)),
+          Permission.write(Role.user(userId)),
+        ])
+
+  database.create_string_attribute(req.variables["DATABASE_ID"], userId, 'name', 128, True)
+  database.create_string_attribute(req.variables["DATABASE_ID"], userId, 'content', 16777216, True)
+  
+
   
   return res.json({
     "areDevelopersAwesome": True,

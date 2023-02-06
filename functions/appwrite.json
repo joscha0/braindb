@@ -1,20 +1,18 @@
 {
     "projectId": "63deb71265369c87130b",
-    "projectName": "notetaky",
-    "functions": [
-        {
-            "$id": "63df28a5c6ac3949839f",
-            "name": "create user collections",
-            "runtime": "python-3.9",
-            "path": "functions/create user collections",
-            "entrypoint": "src/index.py",
-            "ignore": [
-                "__pypackages__"
-            ],
-            "execute": [],
-            "events": [],
-            "schedule": "",
-            "timeout": 15
-        }
-    ]
+    "projectName": "braindb",
+    "functions": [{
+        "$id": "63df28a5c6ac3949839f",
+        "name": "create user collections",
+        "runtime": "python-3.9",
+        "path": "functions/create user collections",
+        "entrypoint": "src/index.py",
+        "ignore": [
+            "__pypackages__"
+        ],
+        "execute": [],
+        "events": [],
+        "schedule": "",
+        "timeout": 15
+    }]
 }
